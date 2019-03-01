@@ -1,0 +1,30 @@
+Pasos de configuración de proyecto
+
+-Instalar visual studio
+-Instalar openCV
+
+-Configurar openCV y visual studio
+https://docs.opencv.org/2.4/doc/tutorials/introduction/windows_visual_studio_Opencv/windows_visual_studio_Opencv.html
+
+-Agregar opencv a visual studio
+C/C++
+--General
+----Directorios de inclusión adicionales
+------opencv\build\bin
+
+Vinculador
+--General
+----Directorios de bibliotecas adicionales
+------build\x64\vc15\lib
+D:\ProgramFiles\opencv\build\include;D:\ProgramFiles\opencv\build\bin;C:\Program Files (x86)\Intel RealSense SDK 2.0\bin\x64;%(AdditionalIncludeDirectories
+
+Vinculador
+--Entrada
+----Dependencias adicionales
+------opencv_world400d.lib
+
+Copiar .dll versión d en TestProject\x64\Debug
+
+
+old
+realsense2.lib;opencv_world343d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)
