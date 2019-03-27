@@ -1,0 +1,20 @@
+C/C++
+	General
+		Additional Include Directories
+			...\opencv\build\include
+			...\Intel RealSense SDK 2.0\include
+
+Linker
+	General
+		Aditional Library Directories
+			...\opencv\build\x64\vc15\lib
+			...\Intel RealSense SDK 2.0\lib\x64
+	Input
+		Additional Dependencies
+			opencv_world401d.lib
+			realsense2.lib
+
+Add system Path:
+...\opencv\build\bin
+...\opencv\build\x64\vc15\bin
+...\Intel RealSense SDK 2.0\bin\x64
