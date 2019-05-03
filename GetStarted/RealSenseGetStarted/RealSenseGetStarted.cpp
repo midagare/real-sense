@@ -8,6 +8,7 @@ int main()
 {
 	// Declare depth colorizer for pretty visualization of depth data
 	rs2::colorizer color_map;
+	color_map.set_option(RS2_OPTION_COLOR_SCHEME, 2.f);
 	// Declare RealSense pipeline, encapsulating the actual device and sensors
 	rs2::pipeline pipe;
 	// Start streaming with default recommended configuration
