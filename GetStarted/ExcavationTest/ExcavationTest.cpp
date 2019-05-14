@@ -108,6 +108,8 @@ int main()
 	cfg.enable_stream(RS2_STREAM_INFRARED, 2, width1, height1, RS2_FORMAT_Y16, fps1);
 	cfg.enable_stream(RS2_STREAM_COLOR, width2, height2, RS2_FORMAT_BGR8, fps2);
 
+	cfg2.enable_stream(RS2_STREAM_INFRARED, 1, width2, height2, RS2_FORMAT_Y8, fps2);
+	cfg2.enable_stream(RS2_STREAM_INFRARED, 2, width2, height2, RS2_FORMAT_Y8, fps2);
 	cfg2.enable_stream(RS2_STREAM_DEPTH, width2, height2, RS2_FORMAT_Z16, fps2);
 
 	// Declare RealSense pipeline, encapsulating the actual device and sensors
@@ -117,6 +119,7 @@ int main()
 	rs2::pipeline_profile pipe_profile = pipe.start(cfg);
 	auto d_sensor = pipe_profile.get_device().first<rs2::depth_sensor>();
 	d_sensor.set_option(RS2_OPTION_EMITTER_ENABLED, 0.f);
+	d_sensor.set_option(RS2_OPTION_DEPTH_UNITS, 0.0001f);
 
 	t = clock();
 	std::cout << "config:" << (t - t0) << std::endl;
@@ -152,7 +155,7 @@ int main()
 		{
 			for (int k = 0; k < 2; k++)
 			{
-				for (auto i = 0; i < 3; ++i) pipe.wait_for_frames();
+				for (auto i = 0; i < 30; ++i) pipe.wait_for_frames();
 				t = clock();
 				std::cout << "init to save: " << (t - t0) << std::endl;
 				cb.push_back(pipe.wait_for_frames());
@@ -172,18 +175,19 @@ int main()
 
 				//Second capture
 				pipe.stop();
+				
 				pipe_profile = pipe.start(cfg2);
 
-				for (auto i = 0; i < 3; ++i) pipe.wait_for_frames();
+				for (auto i = 0; i < 30; ++i) pipe.wait_for_frames();
 				t1 = t;
 				t = clock();
 				std::cout << "init to save2: " << (t - t1) << std::endl;
 
 				for (int i = 0; i < nSave; i++) {
-					depth = pipe.wait_for_frames().get_depth_frame().apply_filter(color_map);
+					depth = pipe.wait_for_frames().get_depth_frame();//; .apply_filter(color_map);
 					//std::cout << "depth...";
 					// Create OpenCV matrix of size (w,h) from the colorized depth data
-					dMat_depth = cv::Mat(cv::Size(width2, height2), CV_16U, (void*)depth.get_data(), cv::Mat::AUTO_STEP);
+					dMat_depth = cv::Mat(cv::Size(width2, height2), CV_16UC1, (void*)depth.get_data());
 
 					//std::cout << "mat...";
 					cv::imwrite("RS_D/" + std::to_string(clock()) + ".png", dMat_depth);
@@ -198,6 +202,7 @@ int main()
 				if (k == 0) {
 					d_sensor = pipe_profile.get_device().first<rs2::depth_sensor>();
 					d_sensor.set_option(RS2_OPTION_EMITTER_ENABLED, 1.f);
+					std::cout << "units: " << d_sensor.get_depth_scale() << std::endl;
 					std::cout << "emitter on: " << std::endl;
 				}
 				else

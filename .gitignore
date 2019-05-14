@@ -1,6 +1,8 @@
 # Custom
 *.jpg
 *.png
+*.zip
+*.tif
 
 # User-specific files
 *.sln
