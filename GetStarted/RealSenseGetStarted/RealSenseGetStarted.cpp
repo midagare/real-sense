@@ -18,7 +18,8 @@ int main()
 	pipe.start(cfg);
 	using namespace cv;
 	const auto window_name = "Display Image";
-	namedWindow(window_name, WINDOW_AUTOSIZE);
+	namedWindow(window_name, WINDOW_NORMAL);
+
 	rs2::frameset data;
 	rs2::frame depth;
 	int w;

@@ -3,9 +3,15 @@
 
 #include "pch.h"
 #include <iostream>
+#include <locale>
 
 int main(int argc, char** argv)
 {
+	std::time_t t = std::time(nullptr);
+	char mbstr[100];
+	std::strftime(mbstr, sizeof(mbstr), "%Y%m%d_%H%M%S", std::localtime(&t));
+	std::cout << mbstr << std::endl;
+
 	if (argc > 3 && !strcmp(argv[1], "add")) {
 		int a = std::atoi(argv[2]);
 		int b = std::atoi(argv[3]);
@@ -19,6 +25,7 @@ int main(int argc, char** argv)
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
+
 
 // Tips for Getting Started: 
 //   1. Use the Solution Explorer window to add/manage files
